@@ -113,7 +113,6 @@ class Chimp(pygame.sprite.Sprite):
             self.dizzy = 1
             self.original = self.image
 
-
 if __name__ == '__main__':
     pygame.init()
     screen = pygame.display.set_mode((468, 60))
@@ -127,11 +126,27 @@ if __name__ == '__main__':
         text = font.render("Pummel and win", 1, (10, 10, 10))
         textpos = text.get_rect(centerx=background.get_width()/2)
         background.blit(text, textpos)
+screen.blit(background, (0, 0))
+pygame.display.flip()
+chimp = Chimp()
+fist = Fist()
+allsprites = pygame.sprite.RenderPlain((fist, chimp))
+clock = pygame.time.Clock()
+
+# event handling
+for event in pygame.event.get():
+    if event.type == QUIT:
+        pass
+    elif event.type == KEYDOWN and event.key == K_ESCAPE:
+        pass
+    elif event.type == MOUSEBUTTONDOWN:
+        if fist.punch(chimp):
+            chimp.punched()
+    elif event.type == MOUSEBUTTONUP:
+        fist.unpunch()
+
+while 1:
+    clock.tick(60)
     screen.blit(background, (0, 0))
+    allsprites.draw(screen)
     pygame.display.flip()
-    chimp = Chimp()
-    fist = Fist()
-    allsprites = pygame.sprite.RenderPlain((fist, chimp))
-    clock = pygame.time.Clock()
-    while 1:
-        clock.tick(60)
